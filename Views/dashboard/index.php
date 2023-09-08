@@ -19,7 +19,7 @@
     </div>
     <div>
         <div class="d-flex justify-content-center">
-            <div class="rounded-4 shadow-sm col col-md-8 col-lg-8 col-xl-8 p-4 m-3">
+            <div class="rounded-4 shadow-sm col col-sm-12 col-md-12 col-lg-10 col-xl-10 p-4 m-3">
                 <canvas id="myChart" height="20" width="50"></canvas>
                 <div class="m-4">
                     <table class="table">
@@ -43,7 +43,7 @@
         </div>
 
         <div class="d-flex justify-content-center mt-3 mb-5">
-            <div class="bg-dark col col-md-8 col-lg-8 col-xl-8">
+            <div class="col col-sm-12 col-md-12 col-lg-10 col-xl-10">
                 <div id="carouselExampleCaptions" class="carousel slide border-1 rounded-4 shadow-sm">
                     <div class="carousel-indicators">
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="" aria-label="Slide 1"></button>
@@ -121,9 +121,9 @@
         </div>
 
         <div class="d-flex justify-content-center mb-5">
-            <div class="rounded-4 shadow-sm col col-md-8 col-lg-8 col-xl-8 p-4 m-3">
+            <div class="rounded-4 shadow-sm col col-sm-12 col-md-12 col-lg-10 col-xl-10 p-4 m-3">
                 <div class="rounded-4 shadow-sm">
-                    <div class="col m-4 p-4 rounded-3 shadow-sm">
+                    <div class="col m-4 p-4">
                         <p class="fst-italic text-secondary">Resumen de ventas por año</p>
                         <table class="table mt-4">
                             <thead>
@@ -136,7 +136,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="charts" class="d-flex rounded-4 shadow-sm">
+                <div id="charts" class="d-flex rounded-4 shadow-sm flex-sm-column flex-md-column flex-lg-column flex-xl-row">
                 </div>
             </div>
 

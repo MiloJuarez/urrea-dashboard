@@ -54,7 +54,7 @@ class Division {
             chartCanvas.width = 100;
             chartCanvas.height = 50;
 
-            let classes = 'col col-md-8 col-lg-6 col-xl-6 p-2';
+            let classes = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-2';
             chartContainer.classList.add(...classes.split(' '));
 
             chartContainer.appendChild(chartCanvas);
