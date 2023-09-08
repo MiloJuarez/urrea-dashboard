@@ -250,7 +250,7 @@ class SaleRepository
 
                         $monthSales[] = [
                             'date' => $month . ' ' . $year,
-                            'amount' => number_format($monthTotalAmount, 2)
+                            'amount' => $monthTotalAmount
                         ];
                     }
                 }

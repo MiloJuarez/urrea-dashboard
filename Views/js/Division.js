@@ -51,8 +51,6 @@ class Division {
 
             let chartContainer = document.createElement('div');
             let chartCanvas = document.createElement('canvas');
-            chartCanvas.width = 100;
-            chartCanvas.height = 50;
 
             let classes = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-2';
             chartContainer.classList.add(...classes.split(' '));
@@ -96,6 +94,7 @@ class Division {
                         yAxisKey: 'nested.value'
                     },
                     plugins: {
+                        responsive: true,
                         legend: {
                             position: 'top',
                         },
