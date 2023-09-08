@@ -82,14 +82,14 @@ class SaleRepository
     public function getDivisions(): bool|string
     {
         try {
-            $customers = $this->dbSale->getDivisions();
-            $customers = array_map(fn($customer) => [
-                'division' => $this->removeAccents($customer['customer'])
-            ], $customers);
+            $divisions = $this->dbSale->getDivisions();
+            $divisions = array_map(fn($division) => [
+                'division' => $this->removeAccents($division['division'])
+            ], $divisions);
 
             return json_encode([
                 'success' => true,
-                'divisions' => $customers
+                'divisions' => $divisions
             ]);
         } catch (\Exception $e) {
             return json_encode([
@@ -112,7 +112,7 @@ class SaleRepository
             }
 
             if ($filters['type'] === 'division') {
-                $sales = $this->filteredByDivision($sales, $filters['search']);
+                return $this->filteredByDivision($sales, $filters['search']);
             }
         }
 
@@ -181,31 +181,28 @@ class SaleRepository
     private function groupDivisionByYear(array $sales): array
     {
         $groupedDivisions = [];
-        $divisions = json_decode($this->getDivisions())['divisions'];
+        $divisions = json_decode($this->getDivisions())->divisions;
 
+        $years = $this->getYearRanges($sales);
         foreach($divisions as $division) {
-            $year = '';
-            foreach ($sales as $sale) {
-                if ($year !== $sale['year']) {
-                    $year = $sale['year'];
+            foreach ($years as $year) {
+                $divisionSales = array_filter($sales, fn ($saleData) => $saleData['division'] === $division->division && $saleData['year'] === $year);
+                $totalDivisionSale = array_reduce($divisionSales, function ($carry, $dSale) {
+                    $carry += $dSale['amount'];
+                    return $carry;
+                });
 
-                    $divisionSales = array_filter($sales, fn ($saleData) => $saleData['division'] === $division);
-                    $totalDivisionSale = array_reduce($divisionSales, function ($carry, $dSale) {
-                        $carry += $dSale['amount'];
-                        return $carry;
-                    });
-
-                    $groupedDivisions[$year][] = [
-                        'division' => $division,
-                        'months' => $totalDivisionSale,
-                    ];
-
-                    break;
-                }
+                $groupedDivisions[$division->division][] = [
+                    'division' => $division->division,
+                    'amount' => number_format($totalDivisionSale, 2),
+                ];
             }
         }
 
-        return [...$groupedDivisions];
+        return [
+            'years' => array_values($years),
+            'data' => array_values($groupedDivisions)
+        ];
     }
 
     /**
@@ -215,46 +212,44 @@ class SaleRepository
     private function groupDivisionByMonth(array $sales): array
     {
         $groupedDivisions = [];
-        $divisions = json_decode($this->getDivisions())['divisions'];
+        $divisions = json_decode($this->getDivisions())->divisions;
+
+        $years = $this->getYearRanges($sales);
 
         foreach($divisions as $division) {
-            $year = '';
-            foreach ($sales as $sale) {
-                if ($year !== $sale['year']) {
-                    $year = $sale['year'];
+            foreach ($years as $key => $year) {
+                $divisionSales = array_filter($sales, fn ($saleData) => $saleData['division'] === $division->division && $saleData['year'] === $year);
 
-                    $divisionSales = array_filter($sales, fn ($saleData) => $saleData['division'] === $division);
+                $month = '';
+                $monthSales = [];
+                $usedMonths = [];
+                foreach ($divisionSales as $divisionSale) {
+                    if ($month !== $divisionSale['month'] && !in_array($divisionSale['month'], $usedMonths)) {
+                        $month = $divisionSale['month'];
+                        $usedMonths[] = $month;
 
-                    $date = '';
-                    $monthSales = [];
-                    foreach ($divisionSales as $divisionSale) {
-                        if ($date !== $divisionSale['month'] . ' ' . $divisionSale['year']) {
-                            $date = $divisionSale['month'] . ' ' . $divisionSale['year'];
+                        $divisionsInDate = array_filter($divisionSales, fn ($dSales) => $dSales['month'] === $month);
+                        $monthTotalAmount = array_reduce($divisionsInDate, function ($carry, $monthSale) {
+                            $carry += $monthSale['amount'];
+                            return $carry;
+                        });
 
-                            $divisionsInDate = array_filter($divisionSales, fn ($dSales) => $dSales['month'] . ' ' . $dSales['year'] === $date);
-                            $monthTotalAmount = array_reduce($divisionsInDate, function ($carry, $monthSale) {
-                                $carry += $monthSale['amount'];
-                                return $carry;
-                            });
-
-                            $monthSales[] = [
-                                'date' => $date,
-                                'amount' => $monthTotalAmount
-                            ];
-                        }
+                        $monthSales[] = [
+                            'date' => $month . ' ' . $year,
+                            'amount' => number_format($monthTotalAmount, 2)
+                        ];
                     }
-
-                    $groupedDivisions[$year][] = [
-                        'division' => $division,
-                        'months' => $monthSales
-                    ];
-
-                    break;
                 }
+
+                $groupedDivisions[$year][] = [
+                    'division' => $division->division,
+                    'months' => $monthSales,
+                    'year' => $year
+                ];
             }
         }
 
-        return [...$groupedDivisions];
+        return array_values($groupedDivisions);
     }
 
     /**

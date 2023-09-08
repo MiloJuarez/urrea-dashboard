@@ -14,9 +14,9 @@ class ChartManagement {
         this.initialize();
     }
 
-    getLabels = function (startYear, endYear) {
+    getLabels = function (providedYear = null) {
         let self = this;
-        let year = new Date().getFullYear();
+        let year = providedYear ?? new Date().getFullYear();
         self.labels = [
             'Ene ' + year,
             'Feb ' + year,
@@ -80,7 +80,7 @@ class ChartManagement {
             success: function (response) {
                 let jsonResponse = JSON.parse(response);
                 self.data = jsonResponse.sales;
-                self.getLabels(jsonResponse.year_range.start_year, jsonResponse.year_range.end_year);
+                self.getLabels();
                 self.drawGraphics(jsonResponse);
             },
             error: function (response) {

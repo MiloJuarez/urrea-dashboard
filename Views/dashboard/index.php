@@ -22,9 +22,6 @@
             <div class="rounded-4 shadow-sm col col-md-8 col-lg-8 col-xl-8 p-4 m-3">
                 <canvas id="myChart" height="20" width="50"></canvas>
             </div>
-            <!--            <div class="rounded-1 shadow-sm col-6 col-sm-10 col-md-6 col-lg-6 p-4 m-3">-->
-            <!--                <canvas id="myChart2"></canvas>-->
-            <!--            </div>-->
         </div>
 
         <div class="d-flex justify-content-center mt-5">
@@ -123,6 +120,33 @@
                     </button>
                 </div>
             </div>
+
+        </div>
+
+        <div class="d-flex justify-content-center mt-5">
+            <h3 class="text-secondary fst-normal">Ventas por división</h3>
+        </div>
+
+        <div class="d-flex justify-content-center mb-5">
+            <div class="rounded-4 shadow-sm col col-md-8 col-lg-8 col-xl-8 p-4 m-3">
+                <div class="rounded-4 shadow-sm">
+                    <div class="col m-4 p-4 rounded-3 shadow-sm">
+                        <p class="fst-italic text-secondary">Resumen de ventas por año</p>
+                        <table class="table mt-4">
+                            <thead>
+                            <tr id="hTblYearlyDivision">
+                                <td scope="col" class="text-secondary-emphasis fw-bold">División</td>
+                            </tr>
+                            </thead>
+                            <tbody id="bTblYearlyDivision">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div id="charts" class="d-flex rounded-4 shadow-sm">
+                </div>
+            </div>
+
         </div>
 
     </div>
