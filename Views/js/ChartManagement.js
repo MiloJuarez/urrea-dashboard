@@ -91,11 +91,11 @@ class ChartManagement {
     }
 
     drawGraphics = function (response) {
-        let ctx = document.getElementById('myChart');
+        let customerSalesChart = document.getElementById('customerSalesChart');
         const self = this;
 
-        ctx.width = 100;
-        ctx.height = window.screen.width <= self.mobileScreenWidth ? 80 : 30;
+        customerSalesChart.width = 100;
+        customerSalesChart.height = window.screen.width <= self.mobileScreenWidth ? 80 : 30;
 
         let datasets = [];
 
@@ -167,7 +167,7 @@ class ChartManagement {
             step++;
         }
 
-        self.barChart = new Chart(ctx, {
+        self.barChart = new Chart(customerSalesChart, {
             type: 'bar',
             data: {
                 labels: self.labels,

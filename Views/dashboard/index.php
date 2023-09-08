@@ -18,7 +18,7 @@
     <div class="col-sm-12 p-2">
         <div class="d-flex justify-content-center col-sm-12">
             <div class="rounded-4 shadow-sm col col-sm-12 col-md-12 col-lg-10 col-xl-10 p-4 m-3">
-                <canvas id="myChart"></canvas>
+                <canvas id="customerSalesChart"></canvas>
                 <div class="m-4">
                     <table class="table">
                         <thead>
@@ -42,14 +42,14 @@
 
         <div class="d-flex justify-content-center mt-3 mb-5">
             <div class="col col-sm-12 col-md-12 col-lg-10 col-xl-10">
-                <div id="carouselExampleCaptions" class="carousel slide border-1 rounded-4 shadow-sm">
+                <div id="carouselSalesAverageCaptions" class="carousel slide border-1 rounded-4 shadow-sm">
                     <div class="carousel-inner" id="carouselAverages">
                     </div>
-                    <button class="carousel-control-prev text-black" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+                    <button class="carousel-control-prev text-black" type="button" data-bs-target="#carouselSalesAverageCaptions" data-bs-slide="prev">
                         <span class="carousel-control-prev-icon bg-dark rounded-4 p-2" aria-hidden="true"></span>
                         <span class="visually-hidden">Previous</span>
                     </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselSalesAverageCaptions" data-bs-slide="next">
                         <span class="carousel-control-next-icon bg-dark rounded-4 p-2" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
