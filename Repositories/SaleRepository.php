@@ -67,7 +67,8 @@ class SaleRepository
                 $customers = $this->dbSale->getCustomers($division->division);
                 $customers = array_map(function($customer) use ($division) {
                     return [
-                        'customer' => $division->division . ' - ' . $this->removeAccents($customer['customer'])
+                        'customer' => $division->division . ' - ' . $this->removeAccents($customer['customer']),
+                        'name' => $this->removeAccents($customer['customer']),
                     ];
                 }, $customers);
 

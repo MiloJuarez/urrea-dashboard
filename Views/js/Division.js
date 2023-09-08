@@ -164,7 +164,7 @@ class Division {
 
             yearData.months.forEach((month) => {
                 if (step % 3 === 0) {
-                    const label = 'Trimestre ' + quarterly;
+                    const label = 'T #' + quarterly;
                     quarterlyAverages.push({
                         label: label,
                         value: (quarterlySum / 3).toFixed(2),

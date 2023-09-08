@@ -10,17 +10,18 @@
     <!--    <link rel="stylesheet" href="Views/css/bootstrap.min.css">-->
     <!--    <link rel="stylesheet" href="Views/css/bootstrap-grid.min.css">-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="Views/css/style.css">
 </head>
 
-<body>
-    <div class="d-flex justify-content-center mt-4">
-        <select name="customer" id="customer" class="p-2 rounded-2">
+<body class="col col-12">
+    <div class="d-flex justify-content-center col col-12 m-4">
+        <select name="customer" id="customer" class="p-2 rounded-2 col col-sm-8 fs-6">
         </select>
     </div>
-    <div>
-        <div class="d-flex justify-content-center">
+    <div class="col-sm-12 p-2">
+        <div class="d-flex justify-content-center col-sm-12">
             <div class="rounded-4 shadow-sm col col-sm-12 col-md-12 col-lg-10 col-xl-10 p-4 m-3">
-                <canvas id="myChart" height="20" width="50"></canvas>
+                <canvas id="myChart"></canvas>
                 <div class="m-4">
                     <table class="table">
                         <thead>
@@ -80,7 +81,7 @@
                         </table>
                     </div>
                 </div>
-                <div id="charts" class="d-flex rounded-4 shadow-sm flex-sm-column flex-md-column flex-lg-column flex-xl-row">
+                <div id="charts" class="d-flex rounded-4 shadow-sm flex-column flex-sm-column flex-md-column flex-lg-column flex-xl-row">
                 </div>
             </div>
 

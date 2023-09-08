@@ -49,7 +49,7 @@ class ChartManagement {
                     let option = document.createElement('option');
                     let optCustomer = customer.customer.replaceAll(' ', '_');
                     option.value = optCustomer;
-                    option.text = customer.customer;
+                    option.text = customer.name;
 
                     if (currentCustomer === optCustomer) {
                         option.selected = true;
