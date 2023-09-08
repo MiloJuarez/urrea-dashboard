@@ -34,7 +34,7 @@ class SaleRepository
                 $keyValues = explode('&', end($queryString));
                 foreach ($keyValues as $keyValue) {
                     $pairValues = explode('=', $keyValue);
-                    $params[$pairValues[0]] = end($pairValues);
+                    $params[$pairValues[0]] = str_replace('%27', "'", end($pairValues));
                 }
             }
 
@@ -59,14 +59,27 @@ class SaleRepository
     public function getCustomers(): bool|string
     {
         try {
-            $customers = $this->dbSale->getCustomers();
-            $customers = array_map(fn($customer) => [
-                'customer' => $this->removeAccents($customer['customer'])
-            ], $customers);
+            $divisions = json_decode($this->getDivisions())->divisions;
+
+            $customersCollection = [];
+
+            foreach ($divisions as $division) {
+                $customers = $this->dbSale->getCustomers($division->division);
+                $customers = array_map(function($customer) use ($division) {
+                    return [
+                        'customer' => $division->division . ' - ' . $this->removeAccents($customer['customer'])
+                    ];
+                }, $customers);
+
+                foreach ($customers as $customer) {
+                    $customersCollection[] = $customer;
+                }
+            }
+
 
             return json_encode([
                 'success' => true,
-                'customers' => $customers
+                'customers' => $customersCollection
             ]);
         } catch (\Exception $e) {
             return json_encode([
@@ -127,7 +140,7 @@ class SaleRepository
     private function filteredByCustomer(array $sales, $customerBrand): array
     {
         return array_filter($sales, function ($sales) use ($customerBrand) {
-            return $customerBrand === str_replace(' ', '_', $sales['customer_brand']);
+            return $customerBrand === str_replace(' ', '_', $sales['division']. ' - ' . $sales['customer_brand']);
         });
     }
 

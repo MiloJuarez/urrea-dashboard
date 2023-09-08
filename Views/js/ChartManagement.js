@@ -6,9 +6,7 @@ class ChartManagement {
 
     barChart = null;
 
-    constructor() {
-        this.getData = this.getData.bind(this);
-    }
+    constructor() {}
 
     init() {
         this.initialize();
@@ -82,6 +80,7 @@ class ChartManagement {
                 self.data = jsonResponse.sales;
                 self.getLabels();
                 self.drawGraphics(jsonResponse);
+                self.loadCustomerSaleData();
             },
             error: function (response) {
                 console.log('ERROR:',response);
@@ -193,6 +192,62 @@ class ChartManagement {
                 },
             },
 
+        });
+    }
+
+    loadCustomerSaleData = function (data) {
+        const self = this;
+        let bTblCustomerSale = document.getElementById('bTblCustomerSale');
+        bTblCustomerSale.innerHTML = ''; // Clear for loaded data
+
+        let lstSales = [];
+
+        const previousYearData = self.data[0];
+        const currentYearData = self.data[1];
+
+        for (const yearData of previousYearData.data) {
+            let currentYearValue = null;
+            const currentYearSale = currentYearData.data.filter((monthSale) => {
+                return monthSale.month === yearData.month
+            });
+
+            if (currentYearSale.length > 0) {
+                currentYearValue = Number.parseFloat(currentYearSale[0].amount);
+            }
+
+            let growthPercentage = currentYearValue ? ((currentYearValue * 100) / yearData.amount) - 100 : null;
+
+            lstSales.push({
+                month: yearData.month,
+                previousYearValue: Number.parseFloat(yearData.amount).toFixed(2),
+                currentYearValue: currentYearValue ? currentYearValue.toFixed(2) : '-',
+                growthPercentage: growthPercentage !== null ? growthPercentage.toFixed(2) : '-',
+            });
+        }
+
+        lstSales.forEach((saleData) => {
+            let row = document.createElement('tr');
+            let cellMonth = document.createElement('td');
+            let cellPreviousYear = document.createElement('td');
+            let cellCurrentYear = document.createElement('td');
+            let cellGrowthPercentage = document.createElement('td');
+
+            cellMonth.textContent = saleData.month;
+            cellPreviousYear.textContent = '$' + saleData.previousYearValue;
+            cellCurrentYear.textContent = saleData.currentYearValue !== '-' ? '$' + saleData.currentYearValue : saleData.currentYearValue;
+
+            if (saleData.growthPercentage < 0) {
+                cellGrowthPercentage.classList.add('text-danger');
+            }
+
+            cellGrowthPercentage.textContent = saleData.growthPercentage !== '-' ? saleData.growthPercentage + '%' : saleData.growthPercentage;
+
+            row.appendChild(cellMonth);
+            row.appendChild(cellPreviousYear);
+            row.appendChild(cellCurrentYear);
+            row.appendChild(cellGrowthPercentage);
+
+            bTblCustomerSale.appendChild(row);
         });
     }
 }

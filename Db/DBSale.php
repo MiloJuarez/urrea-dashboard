@@ -40,14 +40,16 @@ class DBSale
     }
 
     /**
+     * @param string $division
      * @return bool|array
      */
-    public function getCustomers(): bool|array
+    public function getCustomers(string $division): bool|array
     {
         $dbConnection = $this->connection->getConnection();
-        $strQuery = "SELECT DISTINCT(customer_brand) as customer FROM {$this->table}";
+        $strQuery = "SELECT DISTINCT(customer_brand) as customer FROM {$this->table} WHERE division = :division";
 
         $query = $dbConnection->prepare($strQuery);
+        $query->bindValue(':division', $division);
         $query->execute();
 
         return $query->fetchAll();
