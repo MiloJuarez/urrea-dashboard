@@ -1,6 +1,9 @@
 import ChartManagement from "./ChartManagement.js";
 
 class Division {
+
+    mobileScreenWidth = 420;
+
     constructor() {
     }
 
@@ -51,6 +54,9 @@ class Division {
 
             let chartContainer = document.createElement('div');
             let chartCanvas = document.createElement('canvas');
+
+            chartCanvas.width = 100;
+            chartCanvas.height = window.screen.width <= self.mobileScreenWidth ? 80 : 60;
 
             let classes = 'col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 p-2';
             chartContainer.classList.add(...classes.split(' '));

@@ -3,6 +3,7 @@ class ChartManagement {
     labels = [];
     customers = [];
     data = [];
+    mobileScreenWidth = 420;
 
     barChart = null;
 
@@ -91,8 +92,12 @@ class ChartManagement {
 
     drawGraphics = function (response) {
         let ctx = document.getElementById('myChart');
-        let datasets = [];
         const self = this;
+
+        ctx.width = 100;
+        ctx.height = window.screen.width <= self.mobileScreenWidth ? 80 : 30;
+
+        let datasets = [];
 
         if (self.barChart) {
             self.barChart.destroy();
