@@ -6,16 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>URREA Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!--    <link rel="stylesheet" href="Views/css/bootstrap.css">-->
-    <!--    <link rel="stylesheet" href="Views/css/bootstrap.min.css">-->
-    <!--    <link rel="stylesheet" href="Views/css/bootstrap-grid.min.css">-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="Views/css/style.css">
 </head>
 
 <body class="col col-12">
-    <div class="d-flex justify-content-center col col-12 m-4">
-        <select name="customer" id="customer" class="p-2 rounded-2 col col-sm-8 fs-6">
+    <div class="d-flex justify-content-center m-4">
+        <select name="customer" id="customer" class="p-2 rounded-2 col col-sm-8 col-md-5 col-lg-3 col-xl-2">
         </select>
     </div>
     <div class="col-sm-12 p-2">
