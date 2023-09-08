@@ -64,7 +64,7 @@ class ChartManagement {
                 self.getData('sales', currentCustomer);
             },
             error: function (response) {
-                console.log(response)
+                console.error(response)
             }
         });
     }
@@ -83,7 +83,7 @@ class ChartManagement {
                 self.loadCustomerSaleData();
             },
             error: function (response) {
-                console.log('ERROR:',response);
+                console.error(response);
             }
         });
     }
@@ -121,7 +121,6 @@ class ChartManagement {
 
         for (let sale of response.sales) {
             let bgColors = [];
-            // console.log(sale);
             let data = [];
 
             let amounts = sale.data.map((saleData) => saleData.amount);
@@ -161,8 +160,6 @@ class ChartManagement {
 
             step++;
         }
-
-        // console.log(datasets);
 
         self.barChart = new Chart(ctx, {
             type: 'bar',

@@ -5,7 +5,6 @@ class Division {
     }
 
     init() {
-        console.log('Division->init()');
         this.getYearSales();
         this.getMonthlySales();
         this.getSales();
@@ -127,7 +126,6 @@ class Division {
         response.sales.forEach((yearData) => {
             let months = [];
             chartMng.getLabels(yearData.year);
-            console.log('labels',chartMng.labels);
             chartMng.labels.forEach((date) => {
                 let monthsData = yearData.data.filter((saleData) => date === `${saleData.month} ${saleData.year}`);
 
@@ -164,11 +162,8 @@ class Division {
             let quarterly = 1;
             let quarterlySum = 0;
 
-            console.log('length', yearData.months.length);
-
             yearData.months.forEach((month) => {
                 if (step % 3 === 0) {
-                    console.log('step',step, (quarterlySum / 3).toFixed(2))
                     const label = 'Trimestre ' + quarterly;
                     quarterlyAverages.push({
                         label: label,
@@ -176,8 +171,6 @@ class Division {
                     });
 
                     quarterlySum = 0;
-
-                    console.log('quarterly', label);
                     quarterly++;
                 }
 
@@ -190,14 +183,11 @@ class Division {
                 step++;
             });
 
-            console.log('final step', step, quarterly);
-
             let sortedAverages = [...monthlyAverages];
             sortedAverages.sort((a, b) => a.value - b.value);
 
             const worstMonth = sortedAverages[0];
             const bestMonth = sortedAverages[sortedAverages.length - 1];
-            console.log('SORTED MONTHS', sortedAverages);
 
             yearsData.push({
                 year: yearData.year,
@@ -354,7 +344,7 @@ class Division {
                 self.computeAverages(jsonResponse);
             },
             error: function (response) {
-                console.log('ERROR:',response);
+                console.error(response);
             }
         });
     }
