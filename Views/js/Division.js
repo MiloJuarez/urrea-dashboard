@@ -8,6 +8,7 @@ class Division {
         console.log('Division->init()');
         this.getYearSales();
         this.getMonthlySales();
+        this.getSales();
     }
 
     __loadYearlySales = function (response) {
@@ -118,6 +119,198 @@ class Division {
         });
     }
 
+    computeAverages = function (response) {
+        const self = this;
+        let chartMng = new ChartManagement();
+        let lstYearsData = [];
+
+        response.sales.forEach((yearData) => {
+            let months = [];
+            chartMng.getLabels(yearData.year);
+            console.log('labels',chartMng.labels);
+            chartMng.labels.forEach((date) => {
+                let monthsData = yearData.data.filter((saleData) => date === `${saleData.month} ${saleData.year}`);
+
+                const divideIn = monthsData.length;
+                const totalAmount = monthsData.reduce((carry, sale) => {
+                    carry += parseFloat(sale.amount);
+                    return carry;
+                }, 0);
+
+                if (divideIn > 0) {
+                    months.push({
+                        month: date,
+                        amount: totalAmount.toFixed(2),
+                        average: (totalAmount / divideIn).toFixed(2),
+                        divideIn: divideIn,
+                    });
+                }
+            })
+
+            lstYearsData.push({
+                year: yearData.year,
+                months: months
+            });
+        });
+
+        let yearsData = [];
+
+        lstYearsData.forEach((yearData) => {
+            let monthlyAverages = [];
+            let quarterlyAverages = [];
+
+
+            let step = 1;
+            let quarterly = 1;
+            let quarterlySum = 0;
+
+            console.log('length', yearData.months.length);
+
+            yearData.months.forEach((month) => {
+                if (step % 3 === 0) {
+                    console.log('step',step, (quarterlySum / 3).toFixed(2))
+                    const label = 'Trimestre ' + quarterly;
+                    quarterlyAverages.push({
+                        label: label,
+                        value: (quarterlySum / 3).toFixed(2),
+                    });
+
+                    quarterlySum = 0;
+
+                    console.log('quarterly', label);
+                    quarterly++;
+                }
+
+                monthlyAverages.push({
+                    label: month.month,
+                    value: month.average,
+                });
+
+                quarterlySum += Number.parseFloat(month.amount);
+                step++;
+            });
+
+            console.log('final step', step, quarterly);
+
+            let sortedAverages = [...monthlyAverages];
+            sortedAverages.sort((a, b) => a.value - b.value);
+
+            const worstMonth = sortedAverages[0];
+            const bestMonth = sortedAverages[sortedAverages.length - 1];
+            console.log('SORTED MONTHS', sortedAverages);
+
+            yearsData.push({
+                year: yearData.year,
+                monthlyAverage: monthlyAverages,
+                quarterlyAverage: quarterlyAverages,
+                worstMonth: worstMonth,
+                bestMonth: bestMonth,
+            });
+        });
+
+        self.loadAverages(yearsData);
+    }
+
+    loadAverages = function (yearsData) {
+        const self = this;
+        let carouselAverages = document.getElementById('carouselAverages');
+
+        let active = true;
+        yearsData.forEach((yearData) => {
+            let divCarouselItem = document.createElement('div');
+            const activeItem = active ? 'active' : 's';
+            divCarouselItem.classList.add('carousel-item', activeItem)
+            active = false;
+
+            let divContainer = document.createElement('div');
+            const divContainerClasses = "d-flex justify-content-center flex-column align-items-center col bg-white";
+            divContainer.classList.add(...divContainerClasses.split(' '));
+
+            let hTitle = document.createElement('h4');
+            hTitle.innerText = yearData.year;
+
+            let divTable = document.createElement('div');
+            divTable.classList.add('col-8');
+            divTable.appendChild(self.getAverageElement(yearData.monthlyAverage, 'Promedio mensual'));
+            divTable.appendChild(self.getAverageElement(yearData.quarterlyAverage, 'Promedio trimestral', false));
+            divTable.appendChild(self.getMonthElement(yearData.worstMonth, 'Més más bajo'));
+            divTable.appendChild(self.getMonthElement(yearData.bestMonth, 'Més más alto'));
+
+            divContainer.appendChild(hTitle);
+            divContainer.appendChild(divTable);
+
+            divCarouselItem.appendChild(divContainer);
+            carouselAverages.appendChild(divCarouselItem);
+        })
+    }
+
+    getDivContainerChild = function () {
+        let divTile = document.createElement('div');
+        const divTileClasses = 'd-flex justify-content-center border-bottom';
+        divTile.classList.add(...divTileClasses.split(' '));
+
+        return divTile;
+    }
+
+    getChildLabelElement = function (label) {
+        const divChildClasses = 'col-3 d-flex justify-content center align-items-center';
+        let childLabelElemeent = document.createElement('div');
+        childLabelElemeent.classList.add(...divChildClasses.split(' '));
+        childLabelElemeent.innerHTML = `<p class="fw-bold text-secondary">${label}</p>`;
+
+        return childLabelElemeent;
+    }
+
+    getMonthElement = function (month, label) {
+        const self = this;
+
+        const childLabelElement = self.getChildLabelElement(label);
+
+        let childValueElement = document.createElement('div');
+        childValueElement.classList.add('col');
+
+        let divColumn = document.createElement('div');
+        divColumn.classList.add('col','d-flex');
+        divColumn.innerHTML = `
+            <div class="col-4">${month.label.split(' ')[0]}</div>
+            <div class="col fw-bold">$${month.value}</div>
+        `;
+
+        childValueElement.appendChild(divColumn);
+
+        let divChild = self.getDivContainerChild();
+        divChild.appendChild(childLabelElement);
+        divChild.appendChild(childValueElement);
+
+        return divChild;
+    }
+
+    getAverageElement = function (lstData, label, split = true) {
+        const self = this;
+
+        let childLabelElement = self.getChildLabelElement(label);
+
+        let divChildValueElement = document.createElement('div');
+        divChildValueElement.classList.add('col', 'mb-3');
+
+        lstData.forEach((data) => {
+            let divColumn = document.createElement('div');
+            divColumn.classList.add('col','d-flex','border-top');
+            divColumn.innerHTML = `
+                <div class="col-4">${split ? data.label.split(' ')[0] : data.label}</div>
+                <div class="col fw-bold">$${data.value}</div>
+            `;
+
+            divChildValueElement.appendChild(divColumn);
+        });
+
+        let divChild = self.getDivContainerChild()
+        divChild.appendChild(childLabelElement);
+        divChild.appendChild(divChildValueElement);
+
+        return divChild;
+    }
+
     getYearSales = function() {
         let self = this;
         $.ajax({
@@ -146,6 +339,22 @@ class Division {
             },
             error: function (response) {
                 console.error(response);
+            }
+        });
+    }
+
+    getSales = function () {
+        const self = this;
+        $.ajax({
+            url: 'sales', //scope + `?type=customer&search=${customer}`,
+            method: 'GET',
+            dataType: 'json',
+            success: function (response) {
+                let jsonResponse = JSON.parse(response);
+                self.computeAverages(jsonResponse);
+            },
+            error: function (response) {
+                console.log('ERROR:',response);
             }
         });
     }
