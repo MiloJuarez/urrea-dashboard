@@ -41,9 +41,10 @@ class ChartManagement {
             dataType: 'json',
             success: function (response) {
                 let jsonResponse = JSON.parse(response);
-                let currentCustomer = window.localStorage.getItem('customer') ?? self.customers[0].customer;
-
                 self.customers = jsonResponse.customers;
+
+                let currentCustomer = window.localStorage.getItem('customer') ?? self.customers[0].customer;
+                currentCustomer = currentCustomer.replaceAll(' ', '_');
                 self.customers.forEach((customer) => {
                     let option = document.createElement('option');
                     let optCustomer = customer.customer.replaceAll(' ', '_');
