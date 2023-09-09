@@ -7,7 +7,7 @@ Display charts from customers sales
 
 ```bash
 # Clone this repo
-$ git clone https://github.com/MiloJuarez/urrea.git
+$ git clone https://github.com/MiloJuarez/urrea-dashboard.git
 
 # Move to cloned repo
 $ cd urrea
