@@ -46,5 +46,5 @@ C:\xampp\mysq\bin>mysql -u root -p <database> < path/to/urrea-dashboard/urrea.sq
 #### #3 Next, copy this project to your <strong><i>htdocs</i></strong> folder, usually located at: <strong><i>C:\xampp\htdocs</i></strong>.
 <strong>Note:</strong> Make sure Apache service is running, if not, enable it from the XAMPP Control Panel app.
 
-Finally, open your browser and type the next url: http://localhost/urrea-dasboard
+Finally, open your browser and type the next url: http://localhost/urrea-dashboard
 
