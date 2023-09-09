@@ -10,7 +10,7 @@ Display charts from customers sales
 $ git clone https://github.com/MiloJuarez/urrea-dashboard.git
 
 # Move to cloned repo
-$ cd urrea
+$ cd urrea-dashboard
 
 # Create .env file
 $ cp .env.example .env
@@ -41,7 +41,7 @@ mysql>\q
 ```
 * 2.2 In the project you have cloned, you'll find the <i>urrea.sql</i> file, use it to import the data as following:
 ```
-C:\xampp\mysq\bin>mysql -u root -p <database> < path/to/urrea/urrea.sql
+C:\xampp\mysq\bin>mysql -u root -p <database> < path/to/urrea-dashboard/urrea.sql
 ```
 #### #3 Next, copy this project to your <strong><i>htdocs</i></strong> folder, usually located at: <strong><i>C:\xampp\htdocs</i></strong>.
 <strong>Note:</strong> Make sure Apache service is running, if not, enable it from the XAMPP Control Panel app.
